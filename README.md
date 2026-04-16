@@ -6,11 +6,6 @@ Stoper les processus : docker compose down
 # Questions TP1 : 
 
 1/ Les données SQL sont-elles toujours présentes ? : Oui 
-2/ Les données MongoDB sont-elles toujours présentes ? :
-3/ Pourquoi ?
-
-![Schéma sans route](./schema_sans_route.png)
-![Schéma avec route](./schema_avec_route.png)
 
 # Questions TP2 :
 
@@ -31,10 +26,20 @@ On a une erreur de contrainte
 Est-ce toujours une bonne idée ?
 Non ce n'est pas une bonne idée ça peut créer des problèmes de cohérences des données.
 
+![Schéma sans route](./schema_sans_route.png)
+![Schéma avec route](./schema_avec_route.png)
+
 # Question TP3 : 
 
 Partie 4/ 
 
 Quel résultat avez-vous obtenu ?
 SQL Error [42501]: ERROR: must be owner of table entrepots
+
+Pourquoi cette opération est-elle interdite ?
+Parce que l’utilisateur readonly n’a que des droits de lecture. Il ne peut ni modifier ni supprimer des tables. La commande DROP TABLE est donc refusée.
+
+Quel principe de sécurité est appliqué ?
+Le principe du moindre privilège : chaque rôle ne reçoit que les droits nécessaires, rien de plus. readonly = lecture uniquement.
+
 
