@@ -1,0 +1,8 @@
+"id_entrepot","nom","ville","capacite_m3"
+1,Entrepot Nord,Lille,5000
+2,Entrepot Sud,Marseille,3000
+3,Entrepot Est,Strasbourg,4000
+4,EcoHub Lille,Lille,
+5,EcoHub Marseille,Marseille,
+6,EcoHub Strasbourg,Strasbourg,
+7,EcoHub Nantes,Nantes,
