@@ -58,7 +58,7 @@ Créer un trigger qui :
 ● empêche un trajet > 2000 km
 ● log l’erreur
 
-># Les fonctions :
+>Les fonctions :
 
 ```
 CREATE OR REPLACE FUNCTION distance_inf_2000()
@@ -85,7 +85,7 @@ END;
 $$ LANGUAGE plpgsql;
 ```
 
-># Les triggers : 
+> Les triggers : 
 
 ```
 CREATE TRIGGER trg_distance_inf_2000
