@@ -136,7 +136,7 @@ EXECUTE FUNCTION log_update_trajet();
 
 Voila ce que ça donne après un update d'un trajet
 
-![Update d'un trajet](./update_trajets.png)
+![Update d'un trajet](./update_trajet.png)
 
 ● Gérer DELETE
 
