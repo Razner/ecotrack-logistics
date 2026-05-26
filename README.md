@@ -189,3 +189,151 @@ Pour éviter les erreurs et être sûr que les règles sont toujours respectées
 ● Quand éviter les triggers ?
 
 Quand la logique est trop complexe ou quand elle peut être faite plus simplement dans le backend. Aussi quand ça rend la base difficile à comprendre ou à maintenir.
+
+# Question TP5 :
+
+> Pourquoi imbriquer ici ?
+
+- les données sont fortement liées
+- les camions et leurs entretiens sont souvent lu ensemble
+- cela évite les jointures SQL
+- la lecture est plus rapide
+
+> Quand utiliser MongoDB plutôt que PostgreSQL ?
+
+- les données changent souvent 
+- les structures sont flexibles
+- les données sont imbriquées
+- on veut éviter les jointures
+- les performances de lecture sont importantes
+
+> Quand faut-il imbriquer ?
+
+- les données sont fortement liées
+- elles sont souvent consultées ensemble
+- cela évite des jointures
+- la taille du document reste raisonnable
+
+> Quels sont les risques d’un document trop gros ?
+
+- ralentissement des performances
+- documents plus lourds à charger
+- limite MongoDB de 16 MB
+- mises à jour plus coûteuses
+- duplication excessive des données
+
+> Requêtes TP5 : 
+
+# Partie 1 : 
+
+insertOne :
+
+{
+  "nom": "GreenLogistics",
+  "ville": "Lille",
+  "capacite_totale": 120,
+  "camions": [
+    {
+      "immatriculation": "FR-001-EC",
+      "energie": "diesel",
+      "options": ["GPS", "Frigo"]
+    }
+  ]
+}
+
+insertMany :
+
+[
+  {
+    "nom": "EcoMove",
+    "ville": "Marseille",
+    "capacite_totale": 200,
+    "camions": [
+      {
+        "immatriculation": "FR-002-EC",
+        "energie": "electrique",
+        "options": ["GPS"]
+      }
+    ]
+  },
+  {
+    "nom": "HydroTrans",
+    "ville": "Nantes",
+    "camions": [
+      {
+        "immatriculation": "FR-003-EC",
+        "energie": "hydrogene",
+        "options": ["GPS", "Hayon"]
+      }
+    ]
+  }
+]
+
+# Partie 2 : 
+
+Trouver les capacités > 150 :
+
+{ "capacite_totale": { "$gt": 150 } }
+
+Trouver les camions électriques ou hydrogène :
+
+{
+  "camions.energie": {
+    "$in": ["electrique", "hydrogene"]
+  }
+}
+
+Trouver les camions avec option Frigo :
+
+{
+  "camions.options": "Frigo"
+}
+
+# Partie 3 :
+
+Ajouter un $group :
+
+{
+  "_id": "$ville",
+  "moyenne_capacite": {
+    "$avg": "$capacite_totale"
+  }
+}
+
+Ajouter $sort :
+
+{
+  "moyenne_capacite": -1
+}
+
+# Partie 4 :
+
+Ajouter des entretiens :
+
+"entretiens": [
+  {
+    "date": "2025-01-10",
+    "type": "vidange",
+    "cout": 300
+  },
+  {
+    "date": "2025-03-15",
+    "type": "freins",
+    "cout": 700
+  }
+]
+
+# Partie 5 :
+
+Ajouter plusieurs entretiens :
+
+{
+  "date": "2025-05-01",
+  "type": "pneus",
+  "cout": 450
+},
+{
+  "date": "2025-06-10",
+  "type": "batterie",
+  "cout": 900
+}
