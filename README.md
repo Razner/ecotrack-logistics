@@ -374,7 +374,7 @@ WHERE ville_depart = 'Paris';
 
 ![paris_trajet](./paris_select.png)
 
-<!--  Avant Index  -->
+Avant Index
 ```
 EXPLAIN ANALYZE
 SELECT *
