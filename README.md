@@ -356,7 +356,7 @@ Ajouter plusieurs entretiens :
 }
 ```
 
-# Questions TP6 :
+# Questions TP7 :
 
 > Requêtes :
 
@@ -384,7 +384,7 @@ WHERE ville_depart = 'Paris';
 
 ![explain_analyse](./explain_analyse.png)
 
-<!--  Après Index  -->
+Après Index
 ```
 EXPLAIN ANALYZE
 SELECT *
@@ -394,7 +394,7 @@ WHERE ville_depart = 'Paris'
 
 ![explain_analyse](./explain_analyse_after.png)
 
-<!--  Index Composite  -->
+Index Composite
 ```
 EXPLAIN ANALYZE
 SELECT *
@@ -402,6 +402,8 @@ FROM trajets_perf
 WHERE ville_depart = 'Paris'
 AND date_trajet > CURRENT_DATE - 30;
 ```
+
+![explain_analyse_composite](./explain_analyse_composite.png)
 
 > Pourquoi PostgreSQL lit-il toute la table ?
 
