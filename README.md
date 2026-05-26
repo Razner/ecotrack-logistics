@@ -29,9 +29,9 @@ Non ce n'est pas une bonne idée ça peut créer des problèmes de cohérences d
 ![Schéma sans route](./schema_sans_route.png)
 ![Schéma avec route](./schema_avec_route.png)
 
-# Question TP3 : 
+# Questions TP3 : 
 
-Partie 4/ 
+> Partie 4 :
 
 Quel résultat avez-vous obtenu ?
 SQL Error [42501]: ERROR: must be owner of table entrepots
@@ -42,9 +42,9 @@ Parce que l’utilisateur readonly n’a que des droits de lecture. Il ne peut n
 Quel principe de sécurité est appliqué ?
 Le principe du moindre privilège : chaque rôle ne reçoit que les droits nécessaires, rien de plus. readonly = lecture uniquement.
 
-# Question TP4 :
+# Questions TP4 :
 
->Partie 4 :
+> Partie 4 :
 
 Comment se comporte l’insertion ?
 Une fois l'insertion faite il me renvoi une erreur puisque au préalable, j'ai fait une fonction de validation où on peut
@@ -190,7 +190,7 @@ Pour éviter les erreurs et être sûr que les règles sont toujours respectées
 
 Quand la logique est trop complexe ou quand elle peut être faite plus simplement dans le backend. Aussi quand ça rend la base difficile à comprendre ou à maintenir.
 
-# Question TP5 :
+# Questions TP5 :
 
 > Pourquoi imbriquer ici ?
 
@@ -228,6 +228,7 @@ Quand la logique est trop complexe ou quand elle peut être faite plus simplemen
 
 insertOne :
 
+```
 {
   "nom": "GreenLogistics",
   "ville": "Lille",
@@ -240,9 +241,11 @@ insertOne :
     }
   ]
 }
+```
 
 insertMany :
 
+```
 [
   {
     "nom": "EcoMove",
@@ -268,48 +271,60 @@ insertMany :
     ]
   }
 ]
+```
 
 # Partie 2 : 
 
 Trouver les capacités > 150 :
 
+```
 { "capacite_totale": { "$gt": 150 } }
+```
 
 Trouver les camions électriques ou hydrogène :
 
+```
 {
   "camions.energie": {
     "$in": ["electrique", "hydrogene"]
   }
 }
+```
 
 Trouver les camions avec option Frigo :
 
+```
 {
   "camions.options": "Frigo"
 }
+```
 
 # Partie 3 :
 
 Ajouter un $group :
 
+```
 {
   "_id": "$ville",
   "moyenne_capacite": {
     "$avg": "$capacite_totale"
   }
 }
+```
 
 Ajouter $sort :
 
+```
 {
   "moyenne_capacite": -1
 }
+```
 
 # Partie 4 :
 
 Ajouter des entretiens :
 
+```
 "entretiens": [
   {
     "date": "2025-01-10",
@@ -322,11 +337,13 @@ Ajouter des entretiens :
     "cout": 700
   }
 ]
+```
 
 # Partie 5 :
 
 Ajouter plusieurs entretiens :
 
+```
 {
   "date": "2025-05-01",
   "type": "pneus",
@@ -337,3 +354,81 @@ Ajouter plusieurs entretiens :
   "type": "batterie",
   "cout": 900
 }
+```
+
+# Questions TP6 :
+
+> Requêtes :
+
+```
+SELECT COUNT(*) FROM trajets_perf;
+```
+
+![select_trajet](./trajets_select.png)
+
+```
+SELECT *
+FROM trajets_perf
+WHERE ville_depart = 'Paris';
+```
+
+![paris_trajet](./paris_select.png)
+
+<!--  Avant Index  -->
+```
+EXPLAIN ANALYZE
+SELECT *
+FROM trajets_perf
+WHERE ville_depart = 'Paris';
+```
+
+![explain_analyse](./explain_analyse.png)
+
+<!--  Après Index  -->
+```
+EXPLAIN ANALYZE
+SELECT *
+FROM trajets_perf
+WHERE ville_depart = 'Paris'
+```
+
+![explain_analyse](./explain_analyse_after.png)
+
+<!--  Index Composite  -->
+```
+EXPLAIN ANALYZE
+SELECT *
+FROM trajets_perf
+WHERE ville_depart = 'Paris'
+AND date_trajet > CURRENT_DATE - 30;
+```
+
+> Pourquoi PostgreSQL lit-il toute la table ?
+
+Parce qu’il n’y a pas d’index sur la colonne.
+Donc il doit vérifier chaque ligne une par une.
+
+> Quelles sont vos observations par rapport à Postgres ?
+
+Avec l’index, la requête est plus rapide.
+PostgreSQL lit moins de données.
+Il utilise un Index Scan au lieu d’un Seq Scan.
+
+> Est-ce plus rapide que l’index simple ?
+
+Oui, souvent c’est plus rapide.
+Parce que l’index composite filtre mieux les données.
+
+> Pourquoi les index accélèrent-ils les lectures ?
+
+Parce qu’ils évitent de lire toute la table.
+PostgreSQL trouve directement les bonnes lignes.
+
+> Pourquoi ralentissent-ils parfois les INSERT ?
+
+Parce que l’index doit aussi être mis à jour à chaque insertion.
+
+> Pourquoi ne pas indexer toutes les colonnes ?
+
+Parce que ça prend de la place.
+Et ça ralentit les écritures (INSERT, UPDATE).
