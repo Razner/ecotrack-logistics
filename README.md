@@ -463,5 +463,53 @@ Car l’index partiel a été créé uniquement pour les lignes où distance_km 
 >3/ Sans Index
 ![tp7bispart3](./tp7bispart1_3.png)
 
-Sans index      | Index simple    | Index partiel
-Temps : 0.016s  | Temps : 1.140s  | Temps : 4.591
+Sans index Temps : 0.016s     
+Index simple Temps : 1.140s
+Index partiel Temps : 4.591
+
+# Partie 2 :
+
+> Que remarquez-vous après la suppression de 50 % des données ?
+
+La taille de la table ne diminue pas immédiatement, car l’espace libéré n’est pas automatiquement récupéré.
+
+> Pourquoi le bloat est-il dangereux ?
+Parce qu’il augmente la taille des tables et des index, ce qui ralentit les requêtes et gaspille de l’espace disque.
+
+# Partie 4 :
+
+> Générer requêtes lentes
+
+```
+SELECT *
+FROM trajets_perf
+ORDER BY random()
+```
+
+![tp7bispart4](./tp7bispart4.png)
+
+> Lire les logs
+
+```
+docker logs ecotrack-postgres
+```
+
+![logs](./logs.png)
+
+# Questions de réflexion :
+
+> Pourquoi tous les index ne sont-ils pas utiles ?
+
+Parce que si tu mets un index partout, ça sert à rien. Il y en a qui ne seront jamais utilisés par les requêtes, donc ça prend juste de la place pour rien et ça peut même ralentir la base.
+
+> Pourquoi les index ralentissent les INSERT ?
+
+Parce qu’à chaque fois que tu ajoutes une ligne, la base doit aussi mettre à jour tous les index liés. Donc plus tu en as, plus chaque insertion prend du temps.
+
+> Pourquoi MongoDB a besoin d’index spécifiques ?
+
+Parce que les données ne sont pas comme en SQL : c’est du JSON avec des tableaux, du texte, des coordonnées… Du coup il faut des index adaptés à chaque type pour que les recherches soient rapides.
+
+> Pourquoi le bloat est dangereux ?
+
+Parce qu’avec les suppressions et les modifications, la base garde de l’espace “vide” inutile. Du coup ça grossit, ça prend plus de place et ça finit par ralentir les requêtes.
