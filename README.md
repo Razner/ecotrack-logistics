@@ -434,3 +434,34 @@ Parce que l’index doit aussi être mis à jour à chaque insertion.
 
 Parce que ça prend de la place.
 Et ça ralentit les écritures (INSERT, UPDATE).
+
+# Question TP7bis :
+
+# Partie 1 :
+>1/ Index Composite
+![tp7bispart1](./tp7bispart1.png)
+
+> PostgreSQL utilise-t-il l’index ?
+
+Oui, PostgreSQL utilise l’index composite si la requête filtre sur ville_depart et date_trajet.
+
+> Le gain est-il visible ?
+
+Oui, le gain est visible, réduction du temps d’exécution et moins de scans séquentiels.
+
+>2/ Index Partiel
+![tp7bispart2](./tp7bispart1_2.png)
+
+> Pourquoi c’est puissant ?
+
+Parce qu’il indexe uniquement les données utiles aux requêtes fréquentes, ce qui le rend plus petit, plus rapide et moins gourmand en mémoire.
+
+> Pourquoi la requête distance_km < 100 n’utilisera pas forcément l’index ?
+
+Car l’index partiel a été créé uniquement pour les lignes où distance_km > 500.
+
+>3/ Sans Index
+![tp7bispart3](./tp7bispart1_3.png)
+
+Sans index      | Index simple    | Index partiel
+Temps : 0.016s  | Temps : 1.140s  | Temps : 4.591
