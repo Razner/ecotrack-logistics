@@ -513,3 +513,37 @@ Parce que les données ne sont pas comme en SQL : c’est du JSON avec des table
 > Pourquoi le bloat est dangereux ?
 
 Parce qu’avec les suppressions et les modifications, la base garde de l’espace “vide” inutile. Du coup ça grossit, ça prend plus de place et ça finit par ralentir les requêtes.
+
+# Questions TP8 :
+
+# Partie 1 :
+
+> Pourquoi le rôle chauffeur_app ne voit-il pas les salaires ?
+
+Parce qu'il possède uniquement le droit SELECT sur les colonnes id et nom, mais pas sur la colonne salaire.
+
+> Quel principe de sécurité est appliqué ?
+
+Le principe du moindre privilège.
+
+# Partie 2 :
+
+> Pourquoi les deux chauffeurs exécutent-ils exactement la même requête SQL mais obtiennent-ils des résultats différents ?
+
+Parce que le Row Level Security applique une politique qui filtre automatiquement les lignes selon l'utilisateur connecté (CURRENT_USER). Chaque chauffeur ne voit que ses propres trajets.
+
+# Partie 4 : 
+
+> Quels sont les risques si un attaquant obtient :
+
+> Le fichier docker-compose.yml ?
+
+Il peut récupérer des informations sensibles comme les identifiants, les mots de passe ou la configuration du serveur.
+
+> Les logs PostgreSQL ?
+
+Il peut voir les tentatives de connexion, les noms d'utilisateurs et obtenir des informations utiles pour préparer une attaque.
+
+> Une sauvegarde contenant des données non anonymisées ?
+
+Il peut accéder à des données personnelles sensibles, ce qui entraîne une violation du RGPD, une fuite de données et des risques d'usurpation d'identité.
